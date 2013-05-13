@@ -1,0 +1,51 @@
+<UserScriptConfig>
+	<Script basedir="indexed" checkRemoteUpdates="1" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709" description="Keyboard Navigation" enabled="true" filename="indexed.user.js" installTime="1329163351311" modified="1309932720000" name="Indexed" namespace="thomas" runAt="document-end" uuid="243d2736-acea-4b2f-b2b0-147191283512" version="null">
+		<Grant>none</Grant>
+		<Include>http://thisisindexed.com/*</Include>
+	</Script>
+	<Script basedir="wikipedia_title_shortene" checkRemoteUpdates="1" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709" description="Shortens page titles for Wikipedia" enabled="true" filename="wikipedia_title_shortene.user.js" installTime="1329163351312" modified="1313118748000" name="Wikipedia Title Shortener" namespace="thomas" runAt="document-end" uuid="6b032916-b959-4396-8754-5f878338be9d" version="null">
+		<Grant>none</Grant>
+		<Include>http://*.wikipedia.org/*</Include>
+	</Script>
+	<Script basedir="xkcd_randomizer" checkRemoteUpdates="1" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709" description="Ctrl + R = Random Page" enabled="true" filename="xkcd_randomizer.user.js" installTime="1329163351313" modified="1315895152000" name="xkcd randomizer" namespace="thomas" runAt="document-end" uuid="2cb0b7f7-a2ca-435b-bdbb-d420a494a4b2" version="null">
+		<Grant>none</Grant>
+		<Include>http://xkcd.com/*</Include>
+	</Script>
+	<Script basedir="Quickmeme_Keyboard_Navigation" checkRemoteUpdates="1" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709" description="use arrow keys to navigate" enabled="true" filename="Quickmeme_Keyboard_Navigation.user.js" installTime="1338260009515" modified="1348208898000" name="Quickmeme Keyboard Navigation" namespace="thomas" runAt="document-end" uuid="1fc993fb-35eb-4e9d-a322-ac6df4588005" version="1">
+		<Grant>none</Grant>
+		<Include>http://www.quickmeme.com/*</Include>
+	</Script>
+	<Script basedir="SMBC" checkRemoteUpdates="1" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709" description="" enabled="true" filename="SMBC.user.js" installTime="1348206674209" modified="1348280060000" name="SMBC" namespace="thomas" runAt="document-end" uuid="5c166e76-8026-42ed-a23d-a3b51604d2c7" version="1" installurl="file:///C:/Users/thomas/AppData/Roaming/Mozilla/Firefox/Profiles/7i12n956.default/gm_scripts/SMBC/SMBC.user.js" updateurl="file:///C:/Users/thomas/AppData/Roaming/Mozilla/Firefox/Profiles/7i12n956.default/gm_scripts/SMBC/SMBC.user.js">
+		<Grant>none</Grant>
+		<Include>http://www.smbc-comics.com/index.php*</Include>
+	</Script>
+	<Script basedir="Groove-Bay_New_Member" checkRemoteUpdates="1" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709" description="" enabled="true" filename="Groove-Bay_New_Member.user.js" installTime="1352568887107" modified="1368392425000" name="Groove-Bay: NewMember" namespace="thomas" runAt="document-end" uuid="5f6f47f9-64f1-4cfb-bd2c-660be0d04c72" version="1" installurl="file:///C:/Users/thomas/AppData/Roaming/Mozilla/Firefox/Profiles/7i12n956.default/gm_scripts/Groove-Bay_New_Member/Groove-Bay_New_Member.user.js" updateurl="file:///C:/Users/thomas/AppData/Roaming/Mozilla/Firefox/Profiles/7i12n956.default/gm_scripts/Groove-Bay_New_Member/Groove-Bay_New_Member.user.js">
+		<Grant>none</Grant>
+		<Include>http://groove-bay.com/Registration/?note=NewMember</Include>
+		<Include>http://www.groove-bay.com/Registration/?note=NewMember</Include>
+	</Script>
+	<Script basedir="Groove-Bay_AddBalance" checkRemoteUpdates="1" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709" description="" enabled="true" filename="Groove-Bay_AddBalance.user.js" installTime="1352570412181" modified="1352571448000" name="Groove-Bay: AddBalance" namespace="thomas" runAt="document-end" uuid="945a62d3-3326-40ca-888e-b8e4efce187b" version="1" installurl="file:///C:/Users/thomas/AppData/Roaming/Mozilla/Firefox/Profiles/7i12n956.default/gm_scripts/Groove-Bay_AddBalance/Groove-Bay_AddBalance.user.js" updateurl="file:///C:/Users/thomas/AppData/Roaming/Mozilla/Firefox/Profiles/7i12n956.default/gm_scripts/Groove-Bay_AddBalance/Groove-Bay_AddBalance.user.js">
+		<Grant>none</Grant>
+		<Include>http://groove-bay.com/addBalance/</Include>
+		<Include>http://www.groove-bay.com/addBalance/</Include>
+	</Script>
+	<Script basedir="Groove-Bay_iCart" checkRemoteUpdates="1" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709" description="" enabled="true" filename="Groove-Bay_iCart.user.js" installTime="1352570964936" modified="1352572200000" name="Groove-Bay: iCart" namespace="thomas" runAt="document-end" uuid="52b2c400-6835-4ec9-8f90-ff5b48e0883e" version="1" installurl="file:///C:/Users/thomas/AppData/Roaming/Mozilla/Firefox/Profiles/7i12n956.default/gm_scripts/Groove-Bay_iCart/Groove-Bay_iCart.user.js" updateurl="file:///C:/Users/thomas/AppData/Roaming/Mozilla/Firefox/Profiles/7i12n956.default/gm_scripts/Groove-Bay_iCart/Groove-Bay_iCart.user.js">
+		<Grant>none</Grant>
+		<Include>http://groove-bay.com/iCart/*</Include>
+		<Include>http://www.groove-bay.com/iCart/*</Include>
+	</Script>
+	<Script basedir="Groove-Bay_Order" checkRemoteUpdates="1" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709" description="" enabled="true" filename="Groove-Bay_Order.user.js" installTime="1352571401461" modified="1352571620000" name="Groove-Bay: Order" namespace="thomas" runAt="document-end" uuid="ceb62b23-0e29-4282-88e9-929784562e00" version="1" installurl="file:///C:/Users/thomas/AppData/Roaming/Mozilla/Firefox/Profiles/7i12n956.default/gm_scripts/Groove-Bay_Order/Groove-Bay_Order.user.js" updateurl="file:///C:/Users/thomas/AppData/Roaming/Mozilla/Firefox/Profiles/7i12n956.default/gm_scripts/Groove-Bay_Order/Groove-Bay_Order.user.js">
+		<Grant>none</Grant>
+		<Include>http://groove-bay.com/Order/</Include>
+		<Include>http://www.groove-bay.com/Order/</Include>
+	</Script>
+	<Script basedir="Quickmeme_remove_addbar" checkRemoteUpdates="1" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709" description="see title" enabled="true" filename="Quickmeme_remove_addbar.user.js" installTime="1355461246045" modified="1355466542000" name="Quickmeme remove addbar" namespace="thomas" runAt="document-end" uuid="a05af2e0-72dc-4886-8152-ea68db22098c" version="1" installurl="file:///C:/Users/thomas/AppData/Roaming/Mozilla/Firefox/Profiles/7i12n956.default/gm_scripts/Quickmeme_remove_addbar/Quickmeme_remove_addbar.user.js" updateurl="file:///C:/Users/thomas/AppData/Roaming/Mozilla/Firefox/Profiles/7i12n956.default/gm_scripts/Quickmeme_remove_addbar/Quickmeme_remove_addbar.user.js">
+		<Grant>none</Grant>
+		<Include>http://www.quickmeme.com/*</Include>
+		<Include>http://www.quickmeme.com/latest/*</Include>
+	</Script>
+	<Script basedir="Spacebar_Paging" checkRemoteUpdates="1" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709" description="" enabled="false" filename="Spacebar_Paging.user.js" installTime="1355904633150" modified="1355905680000" name="Spacebar Paging" namespace="thomas" runAt="document-end" uuid="ff13fd16-ce69-4a88-a01c-55141ba489eb" version="1" installurl="file:///C:/Users/thomas/AppData/Roaming/Mozilla/Firefox/Profiles/7i12n956.default/gm_scripts/Spacebar_Paging/Spacebar_Paging.user.js" updateurl="file:///C:/Users/thomas/AppData/Roaming/Mozilla/Firefox/Profiles/7i12n956.default/gm_scripts/Spacebar_Paging/Spacebar_Paging.user.js">
+		<Grant>none</Grant>
+		<Include>*</Include>
+	</Script>
+</UserScriptConfig>
