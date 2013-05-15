@@ -79,22 +79,20 @@ restoredir () {
 }
 
 
-retab () {
-    local TMP_FILE="$TMP/$$"
-    expand --tabs=$TAB_AMOUNT "$1" > "$TMP_FILE" ; mv "$TMP_FILE" "$1"
-}
-
-
 dungeon () {
+    local ORIG_DIR=`pwd`
     cd "$HOME/dungeon/$1"
     ls src &> /dev/null && cd src
+    OLDPWD="$ORIG_DIR"
     ls
 }
 
 
 code () {
+    local ORIG_DIR=`pwd`
     cd "$HOME/code/$1"
     ls src &> /dev/null && cd src
+    OLDPWD="$ORIG_DIR"
     ls
 }
 
