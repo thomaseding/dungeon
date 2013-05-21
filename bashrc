@@ -4,7 +4,7 @@
 
 export TERM='xterm-256color'
 
-export PATH=$PATH:~/.cabal/bin
+export PATH="$HOME/bin:$PATH:$HOME/.cabal/bin"
 
 export TMP="$HOME/tmp"
 
@@ -37,7 +37,9 @@ then
     alias vim="cyg-wrapper.sh vim"
     #cd $USERPROFILE
 else
-    export VISUALIZE="$HOME/ts3d/visualize"
+    export TS3D="$HOME/ts3d"
+    export HMF_MASTER="$TS3D/hmf_master"
+    export VISUALIZE="$TS3D/visualize"
     export SANITY="$VISUALIZE/master/hoops_3df/demo/common/sanity"
     export CGS="$VISUALIZE/master/internal_tools/support/code_gen/cgs"
     if [ "$OSTYPE" != 'darwin12' ]
@@ -60,7 +62,14 @@ alias sudo="sudo " # so aliases work with sudo
 
 
 g () {
-    cd `up "$@"`
+    local DEST
+    DEST=$(up "$@")
+    if [ "$?" == '0' ]
+    then
+	cd "$DEST"
+    else
+	return "$?"
+    fi
 }
 
 
@@ -104,44 +113,54 @@ visualize () {
 
 
 sanity () {
-    ls hoops_3df &> /dev/null && cd hoops_3df
-    local ORIG_DIR=`pwd`
-    local BACKUP_DIR="$ORIG_DIR"
-
-    g hps
-    if [ `pwd` == '/' ]
+    if [ "$1" == '' ]
     then
-	cd "$BACKUP_DIR"
-    else
-	cd ../hoops_3df
-	local BACKUP_DIR=`pwd`
-    fi
+	ls hoops_3df &> /dev/null && cd hoops_3df
+	local ORIG_DIR=`pwd`
+	local BACKUP_DIR="$ORIG_DIR"
 
-    g internal_tools
-    if [ `pwd` == '/' ]
-    then
-	cd "$BACKUP_DIR"
-    else
-	cd ../hoops_3df
-	local BACKUP_DIR=`pwd`
-    fi
+	g hps
+	if [ "$?" == '0' ]
+	then
+	    cd ../hoops_3df
+	    local BACKUP_DIR=`pwd`
+	fi
 
-    g visualize
-    if [ `pwd` == '/' ]
-    then
-	cd "$SANITY"
+	g internal_tools
+	if [ "$?" == '0' ]
+	then
+	    cd ../hoops_3df
+	    local BACKUP_DIR=`pwd`
+	fi
+
+	g visualize
+	if [ "$?" == '0' ]
+	then
+	    cd "$BACKUP_DIR"
+	    g hoops_3df
+	    cd demo/common/sanity
+	else
+	    cd "$SANITY"
+	fi
+	OLDPWD="$ORIG_DIR"
     else
-	cd "$BACKUP_DIR"
-	g hoops_3df
-	cd demo/common/sanity
+	cd "$VISUALIZE/$1/hoops_3df/demo/common/sanity"
     fi
-    OLDPWD="$ORIG_DIR"
 }
 
 
+setlinux () {
+    export LD_LIBRARY_PATH=".:../../Dev_Tools/hoops_3dgs/lib/linux/:/usr/local/qt/lib"
+}
+export -f setlinux
+
+setlinux_x86_64 () {
+    export LD_LIBRARY_PATH=".:../../Dev_Tools/hoops_3dgs/lib/linux_x86_64/:/usr/local/qt/lib"
+}
+export -f setlinux_x86_64
 
 
-
+alias smokegrind="valgrind --smc-check=all --leak-check=full --num-callers=30 ./smoke.exe -H hzb -s -e -P -U -d opengl"
 
 
 
