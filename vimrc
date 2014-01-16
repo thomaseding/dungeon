@@ -5,19 +5,34 @@ call pathogen#infect()
 call pathogen#helptags()
 
 syntax on "enable 
-colorscheme calmar256-thomas
-set bg=dark
 
+if hostname() == "the-law"
+	colorscheme calmar256-thomas
+	set bg=dark
+else
+	colorscheme desert
+	set bg=dark
+endif
+
+
+syntax sync minlines=100
+
+
+set scrolloff=999
+
+set nocursorcolumn
+set nocursorline
+
+set number
+set relativenumber
+
+set ruler
 set noswapfile
 set nowritebackup
 set nobackup
 
 set nowrap
 
-set number
-set relativenumber
-
-set ruler
 
 set backspace=eol,start,indent
 
@@ -29,7 +44,7 @@ set hlsearch
 set statusline=%<%m\ %f\ %y\ %{&ff}\ \%=\ row:%l\ of\ %L\ col:%c%V\ %P
 
 set shiftwidth=4
-set shiftwidth=4
+set tabstop=4
 set softtabstop=4
 set autoindent
 
@@ -54,6 +69,12 @@ noremap ; :
 
 
 autocmd BufRead,BufNewFile *.hs,*.cabal set expandtab
+
+
+
+
+
+
 
 
 

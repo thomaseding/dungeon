@@ -1,2 +1,8 @@
 BoldAsFont=no
 Term=xterm-256color
+Font=DejaVu Sans Mono
+FontHeight=9
+Columns=237
+Rows=70
+CursorType=block
+Transparency=medium
