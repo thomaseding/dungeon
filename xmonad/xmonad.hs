@@ -4,8 +4,10 @@ import qualified Data.Map as M
 import System.Directory
 import System.FilePath
 import System.IO
-import XMonad
-import qualified XMonad.StackSet as W
+import XMonad as XM
+import XMonad.Layout.IndependentScreens as IS
+import XMonad.StackSet as W
+import XMonad.Util.EZConfig as EZ
 
 
 main :: IO ()
@@ -13,24 +15,47 @@ main = do
     xmonad $ defaultConfig {
 	  focusFollowsMouse = True
 	, startupHook = startup
-	, modMask = mod4Mask
-	-- , keys = myKeys
+	-- , modMask = mod4Mask
+	, keys = myKeys3
 	}
+
+
+myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 
 
 startup :: X ()
 startup = do
     spawn "numlockx on"
-    spawn "xloadimage -onroot ~/Pictures/firefox-star.jpg"
-    spawn "dropbox start"
+    spawn "xloadimage -onroot ~/dungeon/img-tiles/3461917328_92f4bb2ab7.jpg"
+    --spawn "dropbox start"
 
 
 myKeys :: XConfig Layout -> Map (KeyMask, KeySym) (X ())
-myKeys conf@(XConfig{XMonad.modMask = modMask}) = id
+myKeys conf@(XConfig{XM.modMask = modMask}) = id
     $ M.insert (modMask .|. shiftMask, xK_Return) (openTerm conf)
     $ M.map setCurrDir
     -- TODO: remove pids from screen map
     $ keys defaultConfig conf
+
+
+myKeys2 = [
+      (otherModMasks ++ "M-" ++ [key], action tag)
+    | (tag, key)  <- zip myWorkspaces "123456789"
+    , (otherModMasks, action) <- [("", windows . v), ("S-", windows . W.shift)]
+    ]
+    where
+        v = W.view
+        --v = W.greedyView
+
+myKeys3 conf = let
+    m = XM.modMask conf
+    oldKeys = undefined -- M.toList  XM.keys conf
+    in M.fromList $ oldKeys ++ [
+         ((m .|. shiftMask, k), windows $ onCurrentScreen f i)
+        | (i, k) <- zip myWorkspaces [xK_1 .. xK_9]
+        , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
+
+
 
 
 type ConcreteScreen = W.Screen String (Layout Window) Window ScreenId ScreenDetail
@@ -53,7 +78,7 @@ fromMyStateKey = drop $ length myStateKeyPrefix
 
 
 modifyExtensible :: (Map String (Either String StateExtension) -> Map String (Either String StateExtension)) -> X ()
-modifyExtensible f = modify $ \s -> s { extensibleState = f $ extensibleState s }
+modifyExtensible f = XM.modify $ \s -> s { extensibleState = f $ extensibleState s }
 
 
 openTerm :: XConfig Layout -> X ()

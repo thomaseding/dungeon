@@ -21,7 +21,7 @@ export TMP="$HOME/tmp"
 
 export TAB_AMOUNT=4
 
-export GHC_EXTENSIONS="-XRank2Types -XExistentialQuantification -XTemplateHaskell -XQuasiQuotes -XFunctionalDependencies -XStandaloneDeriving -XGADTs -XTupleSections -XFlexibleInstances -XFlexibleContexts -XViewPatterns -XMultiParamTypeClasses -XGeneralizedNewtypeDeriving -XEmptyDataDecls -XTypeFamilies -XConstraintKinds"
+export GHC_EXTENSIONS="-XInstanceSigs -XDeriveDataTypeable -XMultiWayIf -XRank2Types -XLambdaCase -XExistentialQuantification -XTemplateHaskell -XQuasiQuotes -XFunctionalDependencies -XStandaloneDeriving -XGADTs -XTupleSections -XFlexibleInstances -XFlexibleContexts -XViewPatterns -XMultiParamTypeClasses -XGeneralizedNewtypeDeriving -XEmptyDataDecls -XTypeFamilies -XConstraintKinds"
 
 LOLCAT_SEED=$RANDOM
 
@@ -38,8 +38,10 @@ promptcommand () {
     let LOLCAT_SEED++
 	local HDRM=$(test ${HOOPS_DEBUG_RAW_MEMORY-0} == 1 && echo "[hdrm]")
 	local DIFFERS="" #$(git branch &> /dev/null && (git diff HEAD --quiet || echo "*"))
-	local BRANCH=$(git branch &> /dev/null && echo " (${DIFFERS}$(git rev-parse --abbrev-ref HEAD))")
-    local PROMPT="\n$(date "+%I:%M%P") ${PWD}\n${HOSTNAME}:${USER}${BRANCH}${HDRM}$(promptchar)"
+	#local BRANCH=$(git branch &> /dev/null && echo " (${DIFFERS}$(git rev-parse --abbrev-ref HEAD))")
+	local COMP_NAME=${HOSTNAME%.local}
+	#local COMP_NAME=$(networksetup -getcomputername)
+    local PROMPT="\n$(date "+%I:%M%P") ${PWD}\n${COMP_NAME}:${USER}${BRANCH}${HDRM}$(promptchar)"
     local COLOR_PROMPT=$(echo -en $PROMPT | lolcat --seed $LOLCAT_SEED --force --spread 3 --freq 0.3 | substr 0 -1 | ansi2prompt)
     export PS1="$COLOR_PROMPT "
     export COLUMNS
@@ -58,6 +60,7 @@ else
     export VISUALIZE="$TECHSOFT3D/visualize"
 	export ISSUES="$TECHSOFT3D/issues"
     export SANITY="$VISUALIZE/master/hoops_3df/demo/common/sanity"
+    export SANITY20="$VISUALIZE/rel2000/hoops_3df/demo/common/sanity"
 	export SMOKE_DATA="$TECHSOFT3D/smoke-data"
     export CGS="$VISUALIZE/master/internal_tools/support/code_gen/cgs"
 	export HEXCHANGE_INSTALL_DIR="$TECHSOFT3D/exchange/HOOPS_Exchange_700"
@@ -81,6 +84,13 @@ alias su="su -l"
 alias sudo="sudo " # so aliases work with sudo
 alias mws="wine $HOME/.wine/drive_c/Program\ Files/Magic\ Workstation/MagicWorkstation.exe"
 alias ghci="ghci $GHC_EXTENSIONS"
+alias sound="unity-control-center sound"
+
+
+
+unconnected () {
+	nohup "$@" >/dev/null 2>&1 &
+}
 
 
 g () {
@@ -149,6 +159,9 @@ _restoredir () {
 	fi
 }
 complete -F _restoredir restoredir
+
+
+source "$HOME/code/osx-volume/src/osx-volume.bash"
 
 
 dungeon () {
@@ -266,6 +279,13 @@ alias smokegrind="valgrind --smc-check=all --leak-check=full --num-callers=30 ./
 movedown () {
 	mv "$1" ../"$1"
 }
+
+
+dual-monitors () {
+	xrandr --output DVI-I-1 --primary --left-of HDMI-1 --output HDMI-1 --auto
+}
+
+
 
 
 

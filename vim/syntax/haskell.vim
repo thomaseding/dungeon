@@ -313,10 +313,10 @@ if version >= 508 || !exists("did_hs_syntax_inits")
   HiLink hsPragma           SpecialComment
   HiLink hsBoolean			  Boolean
 
-  if exists("hs_highlight_types")
+  "if exists("hs_highlight_types")
       HiLink hsDelimTypeExport  hsType
       HiLink hsType             Type
-  endif
+  "endif
 
   HiLink hsDebug            Debug
 
