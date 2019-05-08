@@ -38,8 +38,8 @@ promptcommand () {
 	local DIFFERS="" #$(git branch &> /dev/null && (git diff HEAD --quiet || echo "*"))
 	local BRANCH=$(git branch &> /dev/null && echo " (${DIFFERS}$(git rev-parse --abbrev-ref HEAD))")
 	local COMP_NAME=${HOSTNAME%.local}
-	local PROMPT="$(date "+%I:%M%P") ${PWD}\n${COMP_NAME}:${USER}${BRANCH}$(promptchar)"
-	local COLOR_PROMPT=$(echo -e $PROMPT | lolcat --seed $LOLCAT_SEED --force --spread 3 --freq 0.3 | ansi2prompt)
+	local PROMPT="$(date "+%I:%M%P") ${PWD}\n ${COMP_NAME}:${USER}${BRANCH}$(promptchar)"
+	local COLOR_PROMPT=$(echo -e $PROMPT | lolcat --seed $LOLCAT_SEED --force --spread 3 --freq 0.3 | ansi2prompt --bash)
 	export PS1="\n$COLOR_PROMPT\[\033[0m\] "
 }
 
