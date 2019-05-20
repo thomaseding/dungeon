@@ -1,0 +1,6 @@
+:def Q (\_ -> return ":q")
+:def R (\_ -> return ":r")
+:def T (\_ -> return ":t")
+
+:set prompt-function (\ms _ -> do { ; isSsh <- fmap (maybe False (const True)) $ System.Environment.lookupEnv "SSH_CLIENT" ; let { ; ssh = if isSsh then "(ssh) " else "" } ; date <- fmap (init . map Data.Char.toLower) $ System.Process.readProcess "date" ["+%0R%p"] "" ; dir <- fmap init $ System.Process.readProcess "pwd" [] "" ; mLolcatSeed <- System.Environment.lookupEnv "LOLCAT_SEED" ; lolcatSeed <- case mLolcatSeed of { ; Nothing -> do { ; seed <- System.Process.readProcess "shuf" ["-i", "1-100000", "-n", "1"] "" ; System.Environment.setEnv "LOLCAT_SEED" seed ; pure seed } ; Just seed -> do { ; let { n = read seed :: Int } ; let { seed' = show $ n + 1 } ; System.Environment.setEnv "LOLCAT_SEED" seed' ; pure seed' } } ; let { uncolored = date ++ " " ++ dir ++ "\n" ++ ssh ++ Data.List.intercalate "." ms ++ ">" } ; colored <- System.Process.readProcess "lolcat" ["--seed", lolcatSeed, "--spread", "3", "--freq", "0.3"] uncolored ; colored' <- System.Process.readProcess "/home/teding/code/ansi2prompt/build/Main" ["--haskeline"] colored ; pure $ reverse $ Data.List.delete '\n' $ reverse $ colored' ++ " " })
+
