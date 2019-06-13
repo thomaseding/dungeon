@@ -1,291 +1,194 @@
-# If not running interactively, don't do anything
-[[ $- != *i* ]] && return
+# ~/.bashrc: executed by bash(1) for non-login shells.
+# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+# for examples
 
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+# don't put duplicate lines or lines starting with space in the history.
+# See bash(1) for more options
+HISTCONTROL=ignoreboth
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# If set, the pattern "**" used in a pathname expansion context will
+# match all files and zero or more directories and subdirectories.
+#shopt -s globstar
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-color|*-256color) color_prompt=yes;;
+esac
+
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+#force_color_prompt=yes
+
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
+    else
+	color_prompt=
+    fi
+fi
+
+if [ "$color_prompt" = yes ]; then
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+unset color_prompt force_color_prompt
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
+
+export VISUAL=vim
+export EDITOR="$VISUAL"
+
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+alias less='less -SRc'
+
+# colored GCC warnings and errors
+#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 set -o vi
 
-export HOOPS_WERROR="-Werror -Wno-unused-result"
+LS_COLORS="ln=00;36:di=00;32:fi=00;90:no=00;91"
+export LS_COLORS
 
+# some more ls aliases
+alias ll='ls -AlFv --group-directories-first'
+alias la='ls -A'
+alias l='ls -CF'
 
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
-if [ "${HOSTNAME%.local}" == 'warden' ]
-then
-	export EDITOR="/usr/local/Cellar/macvim/<version>/bin/mvim"
+# Alias definitions.
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
 fi
 
-export TERM='xterm-256color'
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
 
-export PATH="$HOME/bin:$PATH:$HOME/.cabal/bin"
 
-export TMP="$HOME/tmp"
+export VIM=/usr/share/vim/vim74
 
-export TAB_AMOUNT=4
-
-export GHC_EXTENSIONS="-XInstanceSigs -XDeriveDataTypeable -XMultiWayIf -XRank2Types -XLambdaCase -XExistentialQuantification -XTemplateHaskell -XQuasiQuotes -XFunctionalDependencies -XStandaloneDeriving -XGADTs -XTupleSections -XFlexibleInstances -XFlexibleContexts -XViewPatterns -XMultiParamTypeClasses -XGeneralizedNewtypeDeriving -XEmptyDataDecls -XTypeFamilies -XConstraintKinds"
-
-LOLCAT_SEED=$RANDOM
+alias ansi2prompt='~/code/ansi2prompt/build/Main'
+alias substr='~/code/substr/build/Main'
+alias up='~/code/up/build/Main'
 
 promptchar () {
     if [ `id -u` == '0' ]
     then
-		echo -n '#'
+			echo -n '#'
     else
-		echo -n '$'
+			echo -n '$'
     fi
 }
 
+LOLCAT_SEED=$RANDOM
+
 promptcommand () {
-    let LOLCAT_SEED++
-	local HDRM=$(test ${HOOPS_DEBUG_RAW_MEMORY-0} == 1 && echo "[hdrm]")
+	let LOLCAT_SEED++
 	local DIFFERS="" #$(git branch &> /dev/null && (git diff HEAD --quiet || echo "*"))
-	#local BRANCH=$(git branch &> /dev/null && echo " (${DIFFERS}$(git rev-parse --abbrev-ref HEAD))")
-	local COMP_NAME=${HOSTNAME%.local}
-	#local COMP_NAME=$(networksetup -getcomputername)
-    local PROMPT="\n$(date "+%I:%M%P") ${PWD}\n${COMP_NAME}:${USER}${BRANCH}${HDRM}$(promptchar)"
-    local COLOR_PROMPT=$(echo -en $PROMPT | lolcat --seed $LOLCAT_SEED --force --spread 3 --freq 0.3 | substr 0 -1 | ansi2prompt)
-    export PS1="$COLOR_PROMPT "
-    export COLUMNS
+	local BRANCH=$(git branch &> /dev/null && echo " (${DIFFERS}$(git rev-parse --abbrev-ref HEAD))")
+	local COMP_NAME="(ssh) ${HOSTNAME%.local}"
+	local PROMPT="$(date "+%I:%M%P") ${PWD}\n${COMP_NAME}:${USER}${BRANCH}$(promptchar)"
+	local COLOR_PROMPT=$(echo -en $PROMPT | lolcat --seed $LOLCAT_SEED --force --spread 3 --freq 0.3 | ansi2prompt --bash | substr 0 -8)
+	export PS1="\n$COLOR_PROMPT\[\033[0m\] "
 }
 
 export PROMPT_COMMAND=promptcommand
 
-
-if [ "$TERM" == 'cygwin' ]
-then
-    alias vim="cyg-wrapper.sh vim"
-    #cd $USERPROFILE
-else
-    export TECHSOFT3D="$HOME/techsoft3d"
-    export HMF_MASTER="$TECHSOFT3D/hmf_master"
-    export VISUALIZE="$TECHSOFT3D/visualize"
-	export ISSUES="$TECHSOFT3D/issues"
-    export SANITY="$VISUALIZE/master/hoops_3df/demo/common/sanity"
-    export SANITY20="$VISUALIZE/rel2000/hoops_3df/demo/common/sanity"
-	export SMOKE_DATA="$TECHSOFT3D/smoke-data"
-    export CGS="$VISUALIZE/master/internal_tools/support/code_gen/cgs"
-	export HEXCHANGE_INSTALL_DIR="$TECHSOFT3D/exchange/HOOPS_Exchange_700"
-    if [ "$OSTYPE" != 'darwin12' ]
-    then
-		xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
-    fi
-fi
-
-
-alias vim="mvim -v"
-alias v="vi"
-alias vimhelp="vim -c ':help window' -c ':only'"
-alias figlet="figlet -t"
-alias ls="ls -FhHx"
-alias ll="ls -lA"
-alias la="ls -A"
-alias l.="ll | egrep ' \.\w'"
-alias log="git log | less -e"
-alias su="su -l"
-alias sudo="sudo " # so aliases work with sudo
-alias mws="wine $HOME/.wine/drive_c/Program\ Files/Magic\ Workstation/MagicWorkstation.exe"
-alias ghci="ghci $GHC_EXTENSIONS"
-alias sound="unity-control-center sound"
-
-
-
-unconnected () {
-	nohup "$@" >/dev/null 2>&1 &
-}
-
-
 g () {
-    local DEST
-    DEST=$(up "$@")
-    if [ "$?" == '0' ]
-    then
+	local DEST
+	DEST=$(up --from-to $PWD "$@")
+	if [ "$?" == '0' ]
+	then
 		cd "$DEST"
-    else
+	else
 		return "$?"
-    fi
+	fi
 }
 _g () {
-	if [ "$COMP_CWORD" == "1" ]
-	then
-		local cur=${COMP_WORDS[COMP_CWORD]}
-		local parts="$(pwd | tr '/' ' ')"
-		COMPREPLY=( $(compgen -W "$parts" -- $cur) )
-	fi
+  if [ "$COMP_CWORD" == "1" ]
+  then
+    local cur=${COMP_WORDS[COMP_CWORD]}
+    local parts="$(pwd | tr '/' ' ')"
+    COMPREPLY=( $(compgen -W "$parts" -- $cur) )
+  fi
 }
 complete -F _g g
 
 
-foreach () {
-    local CMD=$1
-    shift
-    for arg in "$@" ; do
-		$CMD $arg
-    done
+findpp () {
+	find . -path "*/$1"
 }
 
-
-path () {
-    echo "$PATH" | tr ':' '\n'
-}
-
-
-issue () {
-    cd "$ISSUES/$1"
-}
-_issue () {
-	if [ "$COMP_CWORD" == "1" ]
+#alias v='vi'
+#alias vimlauncher='runghc ~/code/vim-launcher/src/VimLauncher.hs'
+v () {
+	ARGS=$(vimlauncher "$@")
+	if [ "$?" == '0' ]
 	then
-		local cur="${COMP_WORDS[COMP_CWORD]}"
-		local dirs="$(ls -1 $ISSUES | grep '/$')"
-		COMPREPLY=( $(compgen -W "$dirs" -- $cur) )
-	fi
-}
-complete -F _issue issue
-
-
-storedir () {
-    pwd > "$HOME/mycookies/dir-store"
-}
-
-
-restoredir () {
-    cd $(cat "$HOME/mycookies/dir-store")
-}
-_restoredir () {
-	if [ "$COMP_CWORD" == "1" ]
-	then
-		local cur="${COMP_WORDS[COMP_CWORD]}"
-		local dir=$(cat "$HOME/mycookies/dir-store")
-		COMPREPLY=( $(compgen -W "$dir" -- $cur) )
-	fi
-}
-complete -F _restoredir restoredir
-
-
-source "$HOME/code/osx-volume/src/osx-volume.bash"
-
-
-dungeon () {
-    local ORIG_DIR=`pwd`
-    cd "$HOME/dungeon/$1"
-    ls src &> /dev/null && cd src
-    OLDPWD="$ORIG_DIR"
-    ls
-}
-_dungeon () {
-	if [ "$COMP_CWORD" == "1" ]
-	then
-		local cur="${COMP_WORDS[COMP_CWORD]}"
-		local dirs="$(ls -1 $HOME/dungeon | grep '/$')"
-		COMPREPLY=( $(compgen -W "$dirs" -- $cur) )
-	fi
-}
-complete -F _dungeon dungeon
-
-
-code () {
-    local ORIG_DIR=`pwd`
-    cd "$HOME/code/$1"
-    ls src &> /dev/null && cd src
-    OLDPWD="$ORIG_DIR"
-    ls
-}
-_code () {
-	if [ "$COMP_CWORD" == "1" ]
-	then
-		local cur="${COMP_WORDS[COMP_CWORD]}"
-		local dirs="$(ls -1 $HOME/code | grep '/$')"
-		COMPREPLY=( $(compgen -W "$dirs" -- $cur) )
-	fi
-}
-complete -F _code code
-
-
-visualize () {
-    cd "$VISUALIZE/$1"
-    ls
-}
-_visualize () {
-	if [ "$COMP_CWORD" == "1" ]
-	then
-		local cur="${COMP_WORDS[COMP_CWORD]}"
-		local dirs="$(ls -1 $VISUALIZE | grep '/$')"
-		COMPREPLY=( $(compgen -W "$dirs" -- $cur) )
-	fi
-}
-complete -F _visualize visualize
-
-
-sanity () {
-    if [ "$1" == '' ]
-    then
-		ls hoops_3df &> /dev/null && cd hoops_3df
-		local ORIG_DIR=`pwd`
-		local BACKUP_DIR="$ORIG_DIR"
-
-		g hps
-		if [ "$?" == '0' ]
-		then
-			cd ../hoops_3df
-			local BACKUP_DIR=`pwd`
-		fi
-
-		g internal_tools
-		if [ "$?" == '0' ]
-		then
-			cd ../hoops_3df
-			local BACKUP_DIR=`pwd`
-		fi
-
-		g visualize
-		if [ "$?" == '0' ]
-		then
-			cd "$BACKUP_DIR"
-			g hoops_3df
-			cd demo/common/sanity
-		else
-			cd "$SANITY"
-		fi
-
-		OLDPWD="$ORIG_DIR"
+		vim $ARGS
 	else
-		cd "$VISUALIZE/$1/hoops_3df/demo/common/sanity"
-    fi
-}
-_sanity () {
-	if [ "$COMP_CWORD" == "1" ]
-	then
-		local cur="${COMP_WORDS[COMP_CWORD]}"
-		local dirs="$(ls -1 $VISUALIZE | grep '/$')"
-		COMPREPLY=( $(compgen -W "$dirs" -- $cur) )
+		echo "$ARGS" # https://stackoverflow.com/questions/16535886/maintain-line-breaks-in-output-from-subshell
+		return "$?"
 	fi
 }
-complete -F _sanity sanity
 
-
-setlinux () {
-    export LD_LIBRARY_PATH=".:../../Dev_Tools/hoops_3dgs/lib/linux/:/usr/local/qt/lib"
-}
-export -f setlinux
-
-setlinux_x86_64 () {
-    export LD_LIBRARY_PATH=".:../../Dev_Tools/hoops_3dgs/lib/linux_x86_64/:/usr/local/qt/lib"
-}
-export -f setlinux_x86_64
-
-
-alias smokegrind="valgrind --smc-check=all --leak-check=full --num-callers=30 ./smoke.exe -H hzb -s -e -P -U"
-
-
-movedown () {
-	mv "$1" ../"$1"
-}
-
-
-dual-monitors () {
-	xrandr --output DVI-I-1 --primary --left-of HDMI-1 --output HDMI-1 --auto
-}
-
-
-
+# Commands to run when shell opens:
+[[ "$PWD" == "$HOME" ]] && cd ~/Groq
+clear
+ll
 
 

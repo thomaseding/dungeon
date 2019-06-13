@@ -1,24 +1,11 @@
-set t_Co=256
-
-call pathogen#incubate()
-call pathogen#infect()
-call pathogen#helptags()
-
-syntax on "enable 
+execute pathogen#infect()
+syntax on
+filetype plugin indent on
 
 colorscheme thomas
-set bg=dark
+"set bg=dark
 
-
-syntax sync minlines=100
-
-if has("gui_running")
-	if has("gui_win32")
-		set guifont=DejaVu_Sans_Mono:h10:cANSI
-	endif
-else
-	set scrolloff=999
-endif
+syntax sync minlines=300
 
 set nocursorcolumn
 set nocursorline
@@ -45,31 +32,25 @@ set hlsearch
 "set statusline
 set statusline=%<%m\ %f\ %y\ %{&ff}\ \%=\ row:%l\ of\ %L\ col:%c%V\ %P
 
-set shiftwidth=4
-set tabstop=4
-set softtabstop=4
+set shiftwidth=2
+set tabstop=2
+set softtabstop=2
 set autoindent
 
 set matchpairs+=<:>
 
-if has("win32")
-    "set listchars=tab:>,trail:~,eol:$
-else
-    set listchars=tab:→\ ,trail:·,eol:$
-endif
+set mouse+=a
 
+"set clipboard=unnamedplus
 
-let s:ostype = system("echo -n $OSTYPE")
-if !v:shell_error && s:ostype == "darwin12" " do I need a trailing \n or \r?
-"set clipboard=unnamed
-endif
-
+" https://vim.fandom.com/wiki/Highlight_unwanted_spaces
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+\%#\@<!$/
+au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+au InsertLeave * match ExtraWhitespace /\s\+$/
 
 autocmd BufRead,BufNewFile *.hs,*.cabal set expandtab
-autocmd BufReadPost,BufNewFile SConstruct,SConscript set filetype=python
 
-
-"noremap ;; ;
 noremap ; :
 
 nnoremap Y y$
@@ -95,7 +76,6 @@ command Wq wq
 command W w
 command Q q
 
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """"""""""""""""""\
 """""""           |
@@ -108,7 +88,7 @@ command Q q
 set timeout " Do time out on mappings and others
 set timeoutlen=2000 " Wait {num} ms before timing out a mapping
 
-" When you’re pressing Escape to leave insert mode in the terminal, it will by
+" When you're pressing Escape to leave insert mode in the terminal, it will by
 " default take a second or another keystroke to leave insert mode completely
 " and update the statusline. This fixes that. I got this from:
 " https://powerline.readthedocs.org/en/latest/tipstricks.html#vim
@@ -133,15 +113,9 @@ endif
 
 
 
-
-
-
-
-
-
-
-
-
-
+" Disable syntax when using vim as a difftool.
+if &diff
+    syntax off
+endif
 
 
