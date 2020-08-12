@@ -18,6 +18,7 @@ shopt -s histappend
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=1000
 HISTFILESIZE=2000
+HISTIGNORE='exit'
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -80,6 +81,23 @@ alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias less='less -SRc'
+alias tb='tensorboard --logdir=/home/teding/tensorboard-workspace --reload_interval=2'
+
+bghci () {
+	local common_flags='-Werror -Wall -Wincomplete-uni-patterns'
+
+	if [ -z "$update" ]
+	then
+		bake update ghci --current
+	fi
+
+	if [ -z "$typecheck" ]
+	then
+		new_update=t bake ghci $common_flags -fobject-code "$@"
+	else
+		new_update=t bake ghci $common_flags "$@"
+	fi
+}
 
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
@@ -118,12 +136,17 @@ if ! shopt -oq posix; then
   fi
 fi
 
+export PATH="$PATH:/home/teding/Groq/Compiler/hemingway:/home/teding/.pyenv/bin:/home/teding/.cabal/bin"
 
 export VIM=/usr/share/vim/vim74
 
 alias ansi2prompt='~/code/ansi2prompt/build/Main'
 alias substr='~/code/substr/build/Main'
 alias up='~/code/up/build/Main'
+
+#cabal new-configure && cabal new-build && cabal new-haddock --haddock-for-hackage && cabal new-sdist
+#alias cabal-build-hackage='cabal new-configure && cabal new-build && cabal new-haddock --haddock-for-hackage && cabal new-sdist'
+#alias cabal-build-clean='xxxxxxxxx'
 
 promptchar () {
     if [ `id -u` == '0' ]
@@ -134,14 +157,15 @@ promptchar () {
     fi
 }
 
+PROMPT_GIT_BRANCH_LEN=34
+
 LOLCAT_SEED=$RANDOM
 
 promptcommand () {
 	let LOLCAT_SEED++
 	local DIFFERS="" #$(git branch &> /dev/null && (git diff HEAD --quiet || echo "*"))
-	local BRANCH=$(git branch &> /dev/null && echo " (${DIFFERS}$(git rev-parse --abbrev-ref HEAD))")
-	local COMP_NAME="(ssh) ${HOSTNAME%.local}"
-	local PROMPT="$(date "+%I:%M%P") ${PWD}\n${COMP_NAME}:${USER}${BRANCH}$(promptchar)"
+	local BRANCH=$(git branch &> /dev/null && echo " (${DIFFERS}$(git rev-parse --abbrev-ref HEAD | substr --elipsis 0 $PROMPT_GIT_BRANCH_LEN))")
+	local PROMPT="$(date "+%I:%M%P") ${PWD}\n(ssh) ${BRANCH}$(promptchar)"
 	local COLOR_PROMPT=$(echo -en $PROMPT | lolcat --seed $LOLCAT_SEED --force --spread 3 --freq 0.3 | ansi2prompt --bash | substr 0 -8)
 	export PS1="\n$COLOR_PROMPT\[\033[0m\] "
 }
@@ -187,8 +211,9 @@ v () {
 }
 
 # Commands to run when shell opens:
-[[ "$PWD" == "$HOME" ]] && cd ~/Groq
-clear
-ll
+set -o ignoreeof
+[[ "$PWD" == "$HOME" ]] && (cd ~/groq ; clear ; ll)
 
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
 
