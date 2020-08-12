@@ -1,3 +1,12 @@
+" Hide buggy system "matchparen" so corrected user version
+" can be used instead.
+"
+" https://vi.stackexchange.com/q/18701
+"
+" Link for file with fixed bug:
+" https://github.com/vim/vim/blob/master/runtime/plugin/matchparen.vim
+let g:loaded_matchparen = 1
+
 execute pathogen#infect()
 syntax on
 filetype plugin indent on
@@ -6,6 +15,8 @@ colorscheme thomas
 "set bg=dark
 
 syntax sync minlines=300
+
+set sidescroll=1
 
 set nocursorcolumn
 set nocursorline
@@ -51,6 +62,11 @@ au InsertLeave * match ExtraWhitespace /\s\+$/
 
 autocmd BufRead,BufNewFile *.hs,*.cabal set expandtab
 
+"augroup fmt
+	"autocmd!
+	"autocmd BufWritePre *.hs try | undojoin | Neoformat | catch /^Vim\%((\a\+)\)\=:E790/ | endtry
+"augroup END
+
 noremap ; :
 
 nnoremap Y y$
@@ -75,6 +91,15 @@ command WQ wq
 command Wq wq
 command W w
 command Q q
+
+
+
+
+"highlight Underscore cterm=bold
+"match Underscore /_/
+"au InsertEnter * match Underscore /_/
+"au InsertLeave * match Underscore /_/
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """"""""""""""""""\
