@@ -1,4 +1,4 @@
-:def Q (\_ -> return ":q")
+:def q (\_ -> return "")
 :def R (\_ -> return ":r")
 :def T (\_ -> return ":t")
 
