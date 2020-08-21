@@ -1,3 +1,6 @@
+export BASH_SILENCE_DEPRECATION_WARNING=1
+
+[ -f "/Users/thomaseding/.ghcup/env" ] && source "/Users/thomaseding/.ghcup/env" # ghcup-env
 
 PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 PATH="$HOME/Library/Haskell/bin:$PATH"
@@ -13,14 +16,16 @@ LS_COLORS="ln=00;36:di=00;32:fi=00;90:no=00;91"
 export LS_COLORS
 
 # some more ls aliases
-alias ls='ls --color=auto'
-alias ll='ls -AlFv --group-directories-first'
+alias ls='gls --color=auto'
+alias ll='ls -AlFv' # --group-directories-first
 alias la='ls -A'
 alias l='ls -CF'
 
 alias v='vi'
 
-alias ansi2prompt='/Users/teding/code/ansi2prompt/dist-newstyle/build/x86_64-osx/ghc-8.6.3/ansi2prompt-0.1.0.1/x/ansi2prompt/build/ansi2prompt/ansi2prompt'
+export CODE="$HOME/code"
+
+alias ansi2prompt="$CODE/ansi2prompt/build/Main"
 
 promptchar () {
     if [ `id -u` == '0' ]
@@ -38,8 +43,8 @@ promptcommand () {
 	local DIFFERS="" #$(git branch &> /dev/null && (git diff HEAD --quiet || echo "*"))
 	local BRANCH=$(git branch &> /dev/null && echo " (${DIFFERS}$(git rev-parse --abbrev-ref HEAD))")
 	local COMP_NAME=${HOSTNAME%.local}
-	local PROMPT="$(date "+%I:%M%P") ${PWD}\n ${COMP_NAME}:${USER}${BRANCH}$(promptchar)"
-	local COLOR_PROMPT=$(echo -e $PROMPT | lolcat --seed $LOLCAT_SEED --force --spread 3 --freq 0.3 | ansi2prompt --bash)
+	local PROMPT="$(date "+%I:%M%P") ${PWD}\n${COMP_NAME}:${USER}${BRANCH}$(promptchar)"
+	local COLOR_PROMPT=$(echo -e $PROMPT | lolcat --seed $LOLCAT_SEED --force --spread 3 --freq 0.3 | ansi2prompt --bash | head -c-9)
 	export PS1="\n$COLOR_PROMPT\[\033[0m\] "
 }
 
