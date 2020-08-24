@@ -8,6 +8,8 @@ syntax sync minlines=100
 
 set scrolloff=999
 
+set mouse+=a
+
 set nocursorcolumn
 set nocursorline
 
