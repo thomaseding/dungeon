@@ -11,6 +11,7 @@ function ssh () {
 	/usr/bin/ssh -t $@ "tmux attach || tmux new";
 }
 
+set -u # Error when reading unset env variable
 set -o vi
 
 LS_COLORS="ln=00;36:di=00;32:fi=00;90:no=00;91"
@@ -52,6 +53,24 @@ promptcommand () {
 }
 
 export PROMPT_COMMAND=promptcommand
+
+
+git_incremental_clone()
+{
+    REPO=$1
+    DIR=$2
+    git clone --recurse-submodules $REPO $DIR --depth=1
+    cd $DIR
+    git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+    git fetch --depth=10
+    git fetch --depth=100
+    git fetch --depth=1000
+    git fetch --depth=10000
+    git fetch --depth=100000
+    git fetch --depth=1000000
+    git pull
+}
+
 
 # Commands to run when shell opens:
 #clear
