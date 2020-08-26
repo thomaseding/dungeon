@@ -1,4 +1,5 @@
 export BASH_SILENCE_DEPRECATION_WARNING=1
+export HISTCONTROL=ignoreboth # dont write history for duplicate commands and commands beginning with space
 
 [ -f "/Users/thomaseding/.ghcup/env" ] && source "/Users/thomaseding/.ghcup/env" # ghcup-env
 
