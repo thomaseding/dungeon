@@ -1,3 +1,5 @@
+THOMAS=/Users/thomaseding # Not using HOME to play nice with root login.
+
 export BASH_SILENCE_DEPRECATION_WARNING=1
 export HISTCONTROL=ignoreboth # dont write history for duplicate commands and commands beginning with space
 
@@ -5,12 +7,15 @@ export HISTCONTROL=ignoreboth # dont write history for duplicate commands and co
 
 #PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 PATH="/usr/local/opt/coreutils/bin:$PATH"
-PATH="$HOME/Library/Haskell/bin:$PATH"
+PATH="$THOMAS/Library/Haskell/bin:$PATH"
 export PATH
 
 function ssh () {
 	/usr/bin/ssh -t $@ "tmux attach || tmux new";
 }
+
+complete -cf sudo
+. $THOMAS/.git-completion.bash
 
 set -u # Error when reading unset env variable
 set -o vi
@@ -28,7 +33,9 @@ alias l='ls -CF'
 
 alias v='vi'
 
-export CODE="$HOME/code"
+alias clang-format='xcrun clang-format'
+
+export CODE="$THOMAS/code"
 
 alias ansi2prompt="$CODE/ansi2prompt/build/Main"
 

@@ -1,17 +1,20 @@
 [core]
-	excludesfile = /home/thomas/.gitignore-global
+	excludesfile = /Users/thomaseding/.gitignore-global
 	autocrlf = true
 
 [user]
-	email = thomaseding@gmail.com
 	name = Thomas Eding
+	email = teding@apple.com
 
 [alias]
     lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 
-
-
-
+[pull]
+	rebase = true
 
 [push]
 	default = simple
+
+[rebase]
+	missingCommitsCheck = error
+
