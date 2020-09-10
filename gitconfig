@@ -1,6 +1,7 @@
 [core]
 	excludesfile = /Users/thomaseding/.gitignore-global
 	autocrlf = true
+	safecrlf = false
 
 [user]
 	name = Thomas Eding
