@@ -62,8 +62,28 @@ promptcommand () {
 
 export PROMPT_COMMAND=promptcommand
 
+g() {
+    local DEST
+    DEST=$(up "$@")
+    if [ "$?" == '0' ]
+    then
+        cd "$DEST"
+    else
+        return "$?"
+    fi
+}
 
-git_incremental_clone()
+_g() {
+    if [ "$COMP_CWORD" == "1" ]
+    then
+        local cur=${COMP_WORDS[COMP_CWORD]}
+        local parts="$(pwd | tr '/' ' ')"
+        COMPREPLY=( $(compgen -W "$parts" -- $cur) )
+    fi
+}
+complete -F _g g
+
+git_incremental_clon()
 {
     REPO=$1
     DIR=$2
@@ -80,7 +100,40 @@ git_incremental_clone()
 }
 
 
-# Commands to run when shell opens:
-#clear
-#ll
+clean()
+{
+	NEEDLE='artifacts'
+	if [[ $PWD == *"/$NEEDLE" || $PWD == *"/$NEEDLE/"* ]];
+	then
+		rm -r ./*
+	else
+		echo "clean: Not inside '$NEEDLE' directory structure"
+	fi
+}
+
+
+tokenize()
+{
+	first=1
+	echo -n '['
+	for var in "$@"
+	do
+		var=`echo -n "$var" | sed 's/"/\\\\"/g'`
+		if [ $first == '1' ]
+		then
+			first=0
+		else
+			echo -n ', '
+		fi
+		echo -n '"'
+		echo -n "$var"
+		echo -n '"'
+	done
+	echo -n ']'
+}
+
+
+
+
+
 

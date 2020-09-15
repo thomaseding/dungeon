@@ -6,7 +6,7 @@ set bg=dark
 
 syntax sync minlines=100
 
-set scrolloff=999
+"set scrolloff=999
 
 set mouse+=a
 
