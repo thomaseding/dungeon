@@ -142,7 +142,7 @@ export VIM=/usr/share/vim/vim74
 
 alias ansi2prompt='~/code/ansi2prompt/build/Main'
 alias substr='~/code/substr/build/Main'
-alias up='~/code/up/build/Main'
+#alias up='~/code/up/build/Main'
 
 #cabal new-configure && cabal new-build && cabal new-haddock --haddock-for-hackage && cabal new-sdist
 #alias cabal-build-hackage='cabal new-configure && cabal new-build && cabal new-haddock --haddock-for-hackage && cabal new-sdist'
