@@ -105,7 +105,11 @@ clean()
 	NEEDLE='artifacts'
 	if [[ $PWD == *"/$NEEDLE" || $PWD == *"/$NEEDLE/"* ]];
 	then
-		rm -r ./*
+		files=`ls -A`
+		for file in $files
+		do
+			rm -rf $file
+		done
 	else
 		echo "clean: Not inside '$NEEDLE' directory structure"
 	fi
