@@ -1,14 +1,25 @@
 THOMAS=/Users/thomaseding # Not using HOME to play nice with root login.
 
+bind 'set mark-symlinked-directories on'
+
 export BASH_SILENCE_DEPRECATION_WARNING=1
 export HISTCONTROL=ignoreboth # dont write history for duplicate commands and commands beginning with space
 
 [ -f "/Users/thomaseding/.ghcup/env" ] && source "/Users/thomaseding/.ghcup/env" # ghcup-env
 
+export GOPATH="$HOME/.go"
+
 #PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+PATH="/Users/thomaseding/work/repos/3rd-party/arcanist/bin:$PATH"
 PATH="/usr/local/opt/coreutils/bin:$PATH"
 PATH="$THOMAS/Library/Haskell/bin:$PATH"
+PATH="$PATH:$(go env GOPATH)/bin"
+PATH="/Users/thomaseding/work/repos/3rd-party/depot_tools:$PATH"
 export PATH
+
+export EDITOR=vim
+export VISUAL=$EDITOR
+export GIT_EDITOR=$EDITOR
 
 function ssh () {
 	/usr/bin/ssh -t $@ "tmux attach || tmux new";
@@ -137,6 +148,11 @@ tokenize()
 }
 
 
+cherry-server()
+{
+	cd $HOME/work/repos/3rd-party/cherry
+	go run server.go
+}
 
 
 

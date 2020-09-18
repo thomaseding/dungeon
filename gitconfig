@@ -1,6 +1,8 @@
 [core]
+	#autocrlf = true
+	editor = vim
 	excludesfile = /Users/thomaseding/.gitignore-global
-	autocrlf = true
+	fileMode = false
 	safecrlf = false
 
 [user]
@@ -19,3 +21,8 @@
 [rebase]
 	missingCommitsCheck = error
 
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
