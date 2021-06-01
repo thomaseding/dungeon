@@ -1,16 +1,21 @@
+[alias]
+    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+
+[checkout]
+  defaultRemote=origin
+
 [core]
 	#autocrlf = true
 	editor = vim
-	excludesfile = /Users/thomaseding/.gitignore-global
+	excludesFile = ~/.gitignore
 	fileMode = false
 	safecrlf = false
 
-[user]
-	name = Thomas Eding
-	email = teding@apple.com
-
-[alias]
-    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
 
 [pull]
 	rebase = true
@@ -21,8 +26,7 @@
 [rebase]
 	missingCommitsCheck = error
 
-[filter "lfs"]
-	required = true
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
+[user]
+	name = Thomas Eding
+	email = teding@apple.com
+

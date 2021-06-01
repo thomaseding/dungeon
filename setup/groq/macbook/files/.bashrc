@@ -1,4 +1,4 @@
-THOMAS=/Users/thomaseding # Not using HOME to play nice with root login.
+THOMAS=/Users/thomaseding # Not using $HOME to play nice with root login.
 
 bind 'set mark-symlinked-directories on'
 
@@ -50,23 +50,43 @@ export CODE="$THOMAS/code"
 
 alias ansi2prompt="$CODE/ansi2prompt/build/Main"
 
-promptchar () {
-    if [ `id -u` == '0' ]
-    then
-		echo -n '#'
-    else
-		echo -n '$'
-    fi
+xcode-sdk () {
+  xcode-select -p | perl -pe 's|^.*/([^/]+)/Xcode.app/.*$|$1|'
+}
+
+inside-git-repo () {
+  git rev-parse --is-inside-work-tree > /dev/null 2>&1
+}
+
+git-differs () {
+	! git diff HEAD --quiet > /dev/null 2>&1
+}
+
+git-branch () {
+	git rev-parse --abbrev-ref HEAD
+}
+
+is-root () {
+  [ `id -u` == '0' ]
+}
+
+prompt-char () {
+  is-root && echo -n '#' || echo -n '$'
 }
 
 LOLCAT_SEED=$RANDOM
 
 promptcommand () {
 	let LOLCAT_SEED++
-	local DIFFERS="" #$(git branch &> /dev/null && (git diff HEAD --quiet || echo "*"))
-	local BRANCH=$(git branch &> /dev/null && echo " (${DIFFERS}$(git rev-parse --abbrev-ref HEAD))")
-	local COMP_NAME=${HOSTNAME%.local}
-	local PROMPT="$(date "+%I:%M%p") ${PWD}\n${COMP_NAME}:${USER}${BRANCH}$(promptchar)"
+  local XCODE=$(xcode-sdk)
+	local DIFFERS=''
+	local BRANCH=''
+  if inside-git-repo
+  then
+    local DIFFERS=$(git-differs && echo '*')
+    local BRANCH=" ($(git-branch))"
+  fi
+	local PROMPT="$(date "+%I:%M%p") ${PWD}\n${XCODE}:${USER}${BRANCH}${DIFFERS}$(prompt-char)"
 	local COLOR_PROMPT=$(echo -e $PROMPT | lolcat --seed $LOLCAT_SEED --force --spread 3 --freq 0.3 | ansi2prompt --bash | ghead -c-9)
 	export PS1="\n$COLOR_PROMPT\[\033[0m\] "
 }
@@ -74,40 +94,40 @@ promptcommand () {
 export PROMPT_COMMAND=promptcommand
 
 g() {
-    local DEST
-    DEST=$(up "$@")
-    if [ "$?" == '0' ]
-    then
-        cd "$DEST"
-    else
-        return "$?"
-    fi
+  local DEST
+  DEST=$(up "$@")
+  if [ "$?" == '0' ]
+  then
+    cd "$DEST"
+  else
+    return "$?"
+  fi
 }
 
 _g() {
-    if [ "$COMP_CWORD" == "1" ]
-    then
-        local cur=${COMP_WORDS[COMP_CWORD]}
-        local parts="$(pwd | tr '/' ' ')"
-        COMPREPLY=( $(compgen -W "$parts" -- $cur) )
-    fi
+  if [ "$COMP_CWORD" == "1" ]
+  then
+    local cur=${COMP_WORDS[COMP_CWORD]}
+    local parts="$(pwd | tr '/' ' ')"
+    COMPREPLY=( $(compgen -W "$parts" -- $cur) )
+  fi
 }
 complete -F _g g
 
-git_incremental_clon()
+git_incremental_clone()
 {
-    REPO=$1
-    DIR=$2
-    git clone --recurse-submodules $REPO $DIR --depth=1
-    cd $DIR
-    git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
-    git fetch --depth=10
-    git fetch --depth=100
-    git fetch --depth=1000
-    git fetch --depth=10000
-    git fetch --depth=100000
-    git fetch --depth=1000000
-    git pull
+  REPO=$1
+  DIR=$2
+  git clone --recurse-submodules $REPO $DIR --depth=1
+  cd $DIR
+  git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+  git fetch --depth=10
+  git fetch --depth=100
+  git fetch --depth=1000
+  git fetch --depth=10000
+  git fetch --depth=100000
+  git fetch --depth=1000000
+  git pull
 }
 
 

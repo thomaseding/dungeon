@@ -48,12 +48,12 @@ esac
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
+  # We have color support; assume it's compliant with Ecma-48
+  # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+  # a case would tend to support setf rather than setaf.)
+  color_prompt=yes
     else
-	color_prompt=
+  color_prompt=
     fi
 fi
 
@@ -84,19 +84,19 @@ alias less='less -SRc'
 alias tb='tensorboard --logdir=/home/teding/tensorboard-workspace --reload_interval=2'
 
 bghci () {
-	local common_flags='-Werror -Wall -Wincomplete-uni-patterns'
+  local common_flags='-Werror -Wall -Wincomplete-uni-patterns'
 
-	if [ -z "$update" ]
-	then
-		bake update ghci --current
-	fi
+  if [ -z "$update" ]
+  then
+    bake update ghci --current
+  fi
 
-	if [ -z "$typecheck" ]
-	then
-		new_update=t bake ghci $common_flags -fobject-code "$@"
-	else
-		new_update=t bake ghci $common_flags "$@"
-	fi
+  if [ -z "$typecheck" ]
+  then
+    new_update=t bake ghci $common_flags -fobject-code "$@"
+  else
+    new_update=t bake ghci $common_flags "$@"
+  fi
 }
 
 # colored GCC warnings and errors
@@ -151,9 +151,9 @@ alias substr='~/code/substr/build/Main'
 promptchar () {
     if [ `id -u` == '0' ]
     then
-			echo -n '#'
+      echo -n '#'
     else
-			echo -n '$'
+      echo -n '$'
     fi
 }
 
@@ -162,25 +162,25 @@ PROMPT_GIT_BRANCH_LEN=34
 LOLCAT_SEED=$RANDOM
 
 promptcommand () {
-	let LOLCAT_SEED++
-	local DIFFERS="" #$(git branch &> /dev/null && (git diff HEAD --quiet || echo "*"))
-	local BRANCH=$(git branch &> /dev/null && echo " (${DIFFERS}$(git rev-parse --abbrev-ref HEAD | substr --elipsis 0 $PROMPT_GIT_BRANCH_LEN))")
-	local PROMPT="$(date "+%I:%M%P") ${PWD}\n(ssh) ${BRANCH}$(promptchar)"
-	local COLOR_PROMPT=$(echo -en $PROMPT | lolcat --seed $LOLCAT_SEED --force --spread 3 --freq 0.3 | ansi2prompt --bash | substr 0 -8)
-	export PS1="\n$COLOR_PROMPT\[\033[0m\] "
+  let LOLCAT_SEED++
+  local DIFFERS="" #$(git branch &> /dev/null && (git diff HEAD --quiet || echo "*"))
+  local BRANCH=$(git branch &> /dev/null && echo " (${DIFFERS}$(git rev-parse --abbrev-ref HEAD | substr --elipsis 0 $PROMPT_GIT_BRANCH_LEN))")
+  local PROMPT="$(date "+%I:%M%P") ${PWD}\n(ssh) ${BRANCH}$(promptchar)"
+  local COLOR_PROMPT=$(echo -en $PROMPT | lolcat --seed $LOLCAT_SEED --force --spread 3 --freq 0.3 | ansi2prompt --bash | substr 0 -8)
+  export PS1="\n$COLOR_PROMPT\[\033[0m\] "
 }
 
 export PROMPT_COMMAND=promptcommand
 
 g () {
-	local DEST
-	DEST=$(up --from-to $PWD "$@")
-	if [ "$?" == '0' ]
-	then
-		cd "$DEST"
-	else
-		return "$?"
-	fi
+  local DEST
+  DEST=$(up --from-to $PWD "$@")
+  if [ "$?" == '0' ]
+  then
+    cd "$DEST"
+  else
+    return "$?"
+  fi
 }
 _g () {
   if [ "$COMP_CWORD" == "1" ]
@@ -194,20 +194,20 @@ complete -F _g g
 
 
 findpp () {
-	find . -path "*/$1"
+  find . -path "*/$1"
 }
 
 #alias v='vi'
 #alias vimlauncher='runghc ~/code/vim-launcher/src/VimLauncher.hs'
 v () {
-	ARGS=$(vimlauncher "$@")
-	if [ "$?" == '0' ]
-	then
-		vim $ARGS
-	else
-		echo "$ARGS" # https://stackoverflow.com/questions/16535886/maintain-line-breaks-in-output-from-subshell
-		return "$?"
-	fi
+  ARGS=$(vimlauncher "$@")
+  if [ "$?" == '0' ]
+  then
+    vim $ARGS
+  else
+    echo "$ARGS" # https://stackoverflow.com/questions/16535886/maintain-line-breaks-in-output-from-subshell
+    return "$?"
+  fi
 }
 
 # Commands to run when shell opens:
