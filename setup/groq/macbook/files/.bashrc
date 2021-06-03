@@ -28,7 +28,7 @@ function ssh () {
 complete -cf sudo
 . $THOMAS/.git-completion.bash
 
-set -u # Error when reading unset env variable
+set -u # This causes error when reading unset env variable instead of silent progression.
 set -o vi
 
 LS_COLORS="ln=00;36:di=00;32:fi=00;90:no=00;91"
@@ -49,6 +49,34 @@ alias clang-format='xcrun clang-format'
 export CODE="$THOMAS/code"
 
 alias ansi2prompt="$CODE/ansi2prompt/build/Main"
+
+pause-enter () {
+  read -p 'Press ENTER to continue...'
+}
+
+pause-any () {
+  read -n 1 -s -r -p 'Press any key to continue...'
+}
+
+pause () {
+  pause-enter
+}
+
+notify () {
+  MESSAGE=$1
+  SCRIPT='display notification "'$MESSAGE'"'
+  if [ "$#" -eq "2" ]
+  then
+    TITLE=$2
+    SCRIPT=$SCRIPT' with title "'$TITLE'"'
+  fi
+  echo "$SCRIPT"
+  osascript -e "$SCRIPT"
+}
+
+play-sound () {
+  afplay /System/Library/Sounds/Hero.aiff
+}
 
 xcode-sdk () {
   xcode-select -p | perl -pe 's|^.*/([^/]+)/Xcode.app/.*$|$1|'
