@@ -63,14 +63,13 @@ pause () {
 }
 
 notify () {
-  MESSAGE=$1
-  SCRIPT='display notification "'$MESSAGE'"'
+  local MESSAGE=$1
+  local SCRIPT='display notification "'$MESSAGE'"'
   if [ "$#" -eq "2" ]
   then
-    TITLE=$2
-    SCRIPT=$SCRIPT' with title "'$TITLE'"'
+    local TITLE=$2
+    local SCRIPT=$SCRIPT' with title "'$TITLE'"'
   fi
-  echo "$SCRIPT"
   osascript -e "$SCRIPT"
 }
 
@@ -102,31 +101,30 @@ prompt-char () {
   is-root && echo -n '#' || echo -n '$'
 }
 
-LOLCAT_SEED=$RANDOM
+lolcat_seed=$RANDOM
 
 promptcommand () {
-	let LOLCAT_SEED++
-  local XCODE=$(xcode-sdk)
-	local DIFFERS=''
-	local BRANCH=''
+	let lolcat_seed++
+  local xcode=$(xcode-sdk)
+	local differs=''
+	local branch=''
   if inside-git-repo
   then
-    local DIFFERS=$(git-differs && echo '*')
-    local BRANCH=" ($(git-branch))"
+    local differs=$(git-differs && echo '*')
+    local branch=" ($(git-branch))"
   fi
-	local PROMPT="$(date "+%I:%M%p") ${PWD}\n${XCODE}:${USER}${BRANCH}${DIFFERS}$(prompt-char)"
-	local COLOR_PROMPT=$(echo -e $PROMPT | lolcat --seed $LOLCAT_SEED --force --spread 3 --freq 0.3 | ansi2prompt --bash | ghead -c-9)
-	export PS1="\n$COLOR_PROMPT\[\033[0m\] "
+	local prompt="$(date "+%I:%M%p") ${PWD}\n${xcode}:${USER}${branch}${differs}$(prompt-char)"
+	local color_prompt=$(echo -e $prompt | lolcat --seed $lolcat_seed --force --spread 3 --freq 0.3 | ansi2prompt --bash | ghead -c-9)
+	export PS1="\n$color_prompt\[\033[0m\] "
 }
 
 export PROMPT_COMMAND=promptcommand
 
 g() {
-  local DEST
-  DEST=$(up "$@")
+  local dest=$(up "$@")
   if [ "$?" == '0' ]
   then
-    cd "$DEST"
+    cd "$dest"
   else
     return "$?"
   fi
@@ -144,10 +142,10 @@ complete -F _g g
 
 git_incremental_clone()
 {
-  REPO=$1
-  DIR=$2
-  git clone --recurse-submodules $REPO $DIR --depth=1
-  cd $DIR
+  local repo=$1
+  local dir=$2
+  git clone --recurse-submodules $repo $dir --depth=1
+  cd $dir
   git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
   git fetch --depth=10
   git fetch --depth=100
@@ -161,27 +159,34 @@ git_incremental_clone()
 
 clean()
 {
-	NEEDLE='artifacts'
-	if [[ $PWD == *"/$NEEDLE" || $PWD == *"/$NEEDLE/"* ]];
+  if [ "$#" -ne 1 ]
+  then
+    echo "Illegal number of parameters"
+  fi
+  local dir=`realpath "$1"`
+	local needle='artifacts'
+	if [[ "$dir" == *"/$needle" || "$dir" == *"/$needle/"* ]]
 	then
-		files=`ls -A`
+		local files="$dir/*"
+    local file
 		for file in $files
 		do
 			rm -rf $file
 		done
 	else
-		echo "clean: Not inside '$NEEDLE' directory structure"
+		echo "clean: Not inside '$needle' directory structure"
 	fi
 }
 
 
 tokenize()
 {
-	first=1
+	local first=1
 	echo -n '['
+  local var
 	for var in "$@"
 	do
-		var=`echo -n "$var" | sed 's/"/\\\\"/g'`
+		local var=`echo -n "$var" | sed 's/"/\\\\"/g'`
 		if [ $first == '1' ]
 		then
 			first=0
