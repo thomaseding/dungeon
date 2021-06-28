@@ -48,7 +48,7 @@ set listchars=tab:→\ ,trail:·,eol:$
 autocmd BufRead,BufNewFile *.hs,*.cabal set expandtab
 
 "noremap ;; ;
-noremap ; :
+"noremap ; :
 
 nnoremap Y y$
 

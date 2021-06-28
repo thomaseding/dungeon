@@ -89,6 +89,10 @@ git-differs () {
 	! git diff HEAD --quiet > /dev/null 2>&1
 }
 
+git-commit () {
+	git rev-parse --short HEAD
+}
+
 git-branch () {
 	git rev-parse --abbrev-ref HEAD
 }
@@ -111,11 +115,11 @@ promptcommand () {
   if inside-git-repo
   then
     local differs=$(git-differs && echo '*')
-    local branch=" ($(git-branch))"
+    local branch=" ($(git-branch))${differs} $(git-commit) "
   fi
-	local prompt="$(date "+%I:%M%p") ${PWD}\n${xcode}:${USER}${branch}${differs}$(prompt-char)"
-	local color_prompt=$(echo -e $prompt | lolcat --seed $lolcat_seed --force --spread 3 --freq 0.3 | ansi2prompt --bash | ghead -c-9)
-	export PS1="\n$color_prompt\[\033[0m\] "
+	local prompt="$(date "+%I:%M%p") ${PWD}\n${xcode}:${USER}${branch}$(prompt-char)"
+	local color_prompt=$(echo -e ${prompt} | lolcat --seed $lolcat_seed --force --spread 3 --freq 0.3 | ansi2prompt --bash | ghead -c-9)
+	export PS1="\n${color_prompt}\[\033[0m\] "
 }
 
 export PROMPT_COMMAND=promptcommand
