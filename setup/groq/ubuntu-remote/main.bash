@@ -1,6 +1,7 @@
 # download and install deja vu fonts
 # install iterm2 and import json profile
 # fix git config: name, email, git behaviors
+# add vm public rsa key to github
 
 cd "$HOME"
 

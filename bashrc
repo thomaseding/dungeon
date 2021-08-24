@@ -138,7 +138,7 @@ fi
 
 export PATH="$PATH:/home/teding/Groq/Compiler/hemingway:/home/teding/.pyenv/bin:/home/teding/.cabal/bin"
 
-export VIM=/usr/share/vim/vim74
+#export VIM=/usr/share/vim/vim74
 
 alias ansi2prompt='~/code/ansi2prompt/build/Main'
 alias substr='~/code/substr/build/Main'
