@@ -166,7 +166,8 @@ promptcommand () {
   local DIFFERS="" #$(git branch &> /dev/null && (git diff HEAD --quiet || echo "*"))
   local BRANCH=$(git branch &> /dev/null && echo " (${DIFFERS}$(git rev-parse --abbrev-ref HEAD | substr --elipsis 0 $PROMPT_GIT_BRANCH_LEN))")
   local PROMPT="$(date "+%I:%M%P") ${PWD}\n(ssh) ${BRANCH}$(promptchar)"
-  local COLOR_PROMPT=$(echo -en $PROMPT | lolcat --seed $LOLCAT_SEED --force --spread 3 --freq 0.3 | ansi2prompt --bash | substr 0 -8)
+  #local COLOR_PROMPT=$(echo -en $PROMPT | lolcat --seed $LOLCAT_SEED --force --spread 3 --freq 0.3 | ansi2prompt --bash | substr 0 -8)
+  local COLOR_PROMPT=$(echo -en $PROMPT | lolcat --seed $LOLCAT_SEED --force --spread 3 --freq 0.3 | ansi2prompt --bash)
   export PS1="\n$COLOR_PROMPT\[\033[0m\] "
 }
 
@@ -214,6 +215,6 @@ v () {
 set -o ignoreeof
 [[ "$PWD" == "$HOME" ]] && (cd ~/groq ; clear ; ll)
 
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
+#eval "$(pyenv init -)"
+#eval "$(pyenv virtualenv-init -)"
 

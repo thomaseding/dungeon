@@ -2,6 +2,7 @@ cd ~
 mkdir code
 cd code
 git clone https://github.com/thomaseding/add
+git clone https://github.com/thomaseding/ansi2prompt
 git clone https://github.com/thomaseding/argrev
 git clone https://github.com/thomaseding/battlebots
 git clone https://github.com/thomaseding/cavern
@@ -35,6 +36,7 @@ git clone https://github.com/thomaseding/rows
 git clone https://github.com/thomaseding/spliton
 git clone https://github.com/thomaseding/string-pool
 git clone https://github.com/thomaseding/su-maths
+git clone https://github.com/thomaseding/substr
 git clone https://github.com/thomaseding/tabs
 git clone https://github.com/thomaseding/up
 git clone https://github.com/thomaseding/yesno
