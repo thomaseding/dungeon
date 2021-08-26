@@ -1,5 +1,9 @@
+# For host: https://apple.stackexchange.com/questions/371997/suppressing-the-default-interactive-shell-is-now-zsh-message-in-macos-catalina
+# For host: https://apple.stackexchange.com/questions/191780/how-do-i-configure-my-terminal-app-with-bash-and-iterm2-with-zshell-and-oh-my-zs
 # download and install deja vu fonts on host
 # install iterm2 and import json profile on host
+# for macos host: ~/.bash_profile should source ~/.bashrc
+
 # fix git config: name, email, git behaviors
 # add vm public rsa key to github
 
@@ -37,6 +41,5 @@ sudo sysctl -p
 
 # https://apple.stackexchange.com/a/55886/46550
 curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash
-test -f ~/.git-completion.bash && . $_
 
 
