@@ -3,6 +3,7 @@
 # download and install deja vu fonts on host
 # install iterm2 and import json profile on host
 # for macos host: ~/.bash_profile should source ~/.bashrc
+# https://apple.stackexchange.com/questions/214348/how-to-prevent-mac-from-changing-the-order-of-desktops-spaces/214349
 
 # fix git config: name, email, git behaviors
 # add vm public rsa key to github
@@ -23,6 +24,8 @@ ln -s "$HOME/code/dungeon/vim" "$HOME/.vim"
 ln -s "$HOME/code/dungeon/vimrc" "$HOME/.vimrc"
 ln -s "$HOME/code/dungeon/bashrc" "$HOME/.bashrc"
 
+git config pull.rebase true
+
 build-hs () {
 	REPO="$1"
 	cd $HOME/code/${REPO}
@@ -33,6 +36,7 @@ build-hs () {
 
 build-hs ansi2prompt
 build-hs substr
+#build-hs up
 
 # Check /etc/sysctl.conf to see if
 #     fs.inotify.max_user_watches = 524288

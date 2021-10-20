@@ -218,3 +218,5 @@ set -o ignoreeof
 #eval "$(pyenv init -)"
 #eval "$(pyenv virtualenv-init -)"
 
+test -f ~/.git-completion.bash && . $_
+
