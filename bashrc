@@ -75,6 +75,8 @@ esac
 
 export VISUAL=vim
 export EDITOR="$VISUAL"
+export GROQ="/home/teding/work/repos/Groq"
+export GROQ_UNITY_BUILD=0
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
@@ -112,6 +114,8 @@ alias ll='ls -AlFv --group-directories-first'
 alias la='ls -A'
 alias l='ls -CF'
 
+unset SFT_AUTH_SOCK
+
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
@@ -136,13 +140,15 @@ if ! shopt -oq posix; then
   fi
 fi
 
-export PATH="$PATH:/home/teding/Groq/Compiler/hemingway:/home/teding/.pyenv/bin:/home/teding/.cabal/bin"
+export PATH="$PATH:/home/teding/.pyenv/bin:/home/teding/.cabal/bin"
 
 #export VIM=/usr/share/vim/vim74
 
 alias ansi2prompt='~/code/ansi2prompt/build/Main'
 alias substr='~/code/substr/build/Main'
-#alias up='~/code/up/build/Main'
+alias up='~/code/up/build/Main'
+
+ANSI2PROMPT="$HOME/code/ansi2prompt/build/Main"
 
 #cabal new-configure && cabal new-build && cabal new-haddock --haddock-for-hackage && cabal new-sdist
 #alias cabal-build-hackage='cabal new-configure && cabal new-build && cabal new-haddock --haddock-for-hackage && cabal new-sdist'
@@ -166,12 +172,12 @@ promptcommand () {
   local DIFFERS="" #$(git branch &> /dev/null && (git diff HEAD --quiet || echo "*"))
   local BRANCH=$(git branch &> /dev/null && echo " (${DIFFERS}$(git rev-parse --abbrev-ref HEAD | substr --elipsis 0 $PROMPT_GIT_BRANCH_LEN))")
   local PROMPT="$(date "+%I:%M%P") ${PWD}\n(ssh) ${BRANCH}$(promptchar)"
-  #local COLOR_PROMPT=$(echo -en $PROMPT | lolcat --seed $LOLCAT_SEED --force --spread 3 --freq 0.3 | ansi2prompt --bash | substr 0 -8)
-  local COLOR_PROMPT=$(echo -en $PROMPT | lolcat --seed $LOLCAT_SEED --force --spread 3 --freq 0.3 | ansi2prompt --bash)
+  local COLOR_PROMPT=$(echo -en $PROMPT | lolcat --seed $LOLCAT_SEED --force --spread 3 --freq 0.3 | $ANSI2PROMPT --bash | substr 0 -8)
+  local COLOR_PROMPT=$(echo -en $PROMPT | lolcat --seed $LOLCAT_SEED --force --spread 3 --freq 0.3 | $ANSI2PROMPT --bash)
   export PS1="\n$COLOR_PROMPT\[\033[0m\] "
 }
 
-export PROMPT_COMMAND=promptcommand
+#export PROMPT_COMMAND=promptcommand
 
 g () {
   local DEST
@@ -193,6 +199,22 @@ _g () {
 }
 complete -F _g g
 
+groq () {
+	cd /home/teding/work/repos/Groq
+}
+
+api () {
+	cd /home/teding/work/repos/Groq/GroqAPI
+}
+
+pane () {
+	local name=$1
+	tmux new -s $name
+  if [ "$?" != '0' ]
+  then
+		tmux a -t $name
+	fi
+}
 
 findpp () {
   find . -path "*/$1"
@@ -219,4 +241,8 @@ set -o ignoreeof
 #eval "$(pyenv virtualenv-init -)"
 
 test -f ~/.git-completion.bash && . $_
+source /nix/var/nix/profiles/default/config/bash/bake-completion.bash
+
+export BAKE_BUILDER=groqnode96.lab.groq.com
+
 
